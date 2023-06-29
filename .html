@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CRUD UI</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    
+    th, td {
+      text-align: left;
+      padding: 8px;
+    }
+    
+    th {
+      background-color: #c6e05d;
+    }
+    
+    form {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>CRUD UI</h1>
+  
+  <h2>List Users</h2>
+  <table id="userTable">
+    <thead>
+      <tr>
+        <th>User ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="userList"></tbody>
+  </table>
+  
+  <h2>Create User</h2>
+  <form id="createUserForm">
+    <label for="name">Name:</label>
+    <input type="text" id="name" required>
+    <br>
+    <label for="email">Email:</label>
+    <input type="email" id="email" required>
+    <br>
+    <button type="submit">Create User</button>
+  </form>
+  
+  <script>
+    // Sample user data
+    let users = [
+      { id: 1, name: 'John', email: 'john@example.com' },
+      { id: 2, name: 'Lisa', email: 'lisa@example.com' },
+      { id: 3, name: 'Mark', email: 'mark@example.com' },
+      { id: 4, name: 'Emily', email: 'emily@example.com' }
+    ];
+    
+    // Function to render user table
+    function renderUserTable() {
+      const userList = document.getElementById('userList');
+      userList.innerHTML = '';
+      
+      users.forEach(user => {
+        const row = document.createElement('tr');
+        
+        const idCell = document.createElement('td');
+        idCell.textContent = user.id;
+        row.appendChild(idCell);
+        
+        const nameCell = document.createElement('td');
+        nameCell.textContent = user.name;
+        row.appendChild(nameCell);
+        
+        const emailCell = document.createElement('td');
+        emailCell.textContent = user.email;
+        row.appendChild(emailCell);
+        
+        const actionsCell = document.createElement('td');
+        const editButton = document.createElement('button');
+        editButton.textContent = 'Edit';
+        editButton.addEventListener('click', () => editUser(user.id));
+        actionsCell.appendChild(editButton);
+        row.appendChild(actionsCell);
+        
+        userList.appendChild(row);
+      });
+    }
+    
+    // Function to handle form submission
+    function createUser(event) {
+      event.preventDefault();
+      
+      const nameInput = document.getElementById('name');
+      const emailInput = document.getElementById('email');
+      
+      const newUser = {
+        id: users.length + 1,
+        name: nameInput.value,
+        email: emailInput.value
+      };
+      
+      users.push(newUser);
+      renderUserTable();
+      
+      nameInput.value = '';
+      emailInput.value = '';
+    }
+    
+    // Function to handle user editing
+    function editUser(userId) {
+      const user = users.find(u => u.id === userId);
+      
+      if (user) {
+        // Assuming you navigate to the edit page here
+        console.log(`Editing user with ID ${userId}`);
+      }
+    }
+    
+    // Attach event listeners
+    const createUserForm = document.getElementById('createUserForm');
+    createUserForm.addEventListener('submit', createUser);
+    
+    // Initial rendering
+    renderUserTable();
+  </script>
+</body>
+</html>
